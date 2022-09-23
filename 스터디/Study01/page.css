@@ -1,0 +1,29 @@
+.play_view {
+  display: flex;
+}
+.Charactor {
+  border: 1px solid #000000;
+  width: 300px;
+  height: 300px;
+  margin: 0.4rem;
+  overflow: hidden;
+}
+.Charactor > img {
+  /* box-sizing: border-box; */
+  display: block;
+  width: 100%;
+  object-fit: contain;
+  border: 1px solid #000000;
+}
+
+.Charactor.hited {
+  animation: vibration 0.2s ease;
+}
+@keyframes vibration {
+  from {
+    transform: rotate(1deg);
+  }
+  to {
+    transform: rotate(-1deg);
+  }
+}
