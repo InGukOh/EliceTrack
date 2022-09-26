@@ -6,57 +6,40 @@ const enemy = document.querySelector(".enemy");
 let action_point = 3;
 
 const myStat = {
-  Active_Skill_1: ["Skill_1", 5, 0.4], //스킬명 , 데미지계수 , 명중계수
-  Active_Skill_2: ["Skill_2", 10, 0.3],
+  Active_Skill_1: ["Skill_1", 5, 0.6], //스킬명 , 데미지계수 , 명중계수
+  Active_Skill_2: ["Skill_2", 10, 0.4],
   Active_Skill_3: ["Skill_3", 15, 0.2],
-  HP: 150,
-};
-
-const enemyStat = {
-  Active_Skill_1: ["Skill_1", 10, 0.3],
-  Active_Skill_2: ["Skill_2", 15, 0.2],
-  Active_Skill_3: ["Skill_3", 20, 0.1],
   HP: 100,
 };
 
-for (let action of actions) {
-  action.addEventListener("click", action_this);
-}
+const enemyStat = {
+  Active_Skill_1: ["Skill_1", 10, 0.7],
+  Active_Skill_2: ["Skill_2", 15, 0.4],
+  Active_Skill_3: ["Skill_3", 20, 0.1],
+  HP: 120,
+};
 
-//////////////////////////////////////////////
-
-function action_this() {
-  if (this.value > action_point) {
-    console.log("행동포인트 부족!!");
-  } else {
-    action_point = action_point - parseInt(this.value);
-
-    useSkill(enemy, myStat[`Active_Skill_${this.value}`]);
-
-    if (action_point <= 0) {
-      btn_controller(true);
-      console.log("적의 턴");
-      setTimeout(function () {
-        enemyPhase();
-      }, 2000);
-    }
+window.onload = function gamePlaying() {
+  for (let action of actions) {
+    action.addEventListener("click", gameStart);
   }
-}
 
-//////////////////////////////////////////////
+  let gameStop = function () {
+    console.log("gameStop 실행됨");
+    if (HPcheck() != null) {
+      alert(`게임 종료 !! : ${HPcheck()}`);
+      btn_controller(true);
+      clearInterval(checker);
+    }
+  };
 
-function vibration(target, action_point) {
-  target.classList.add("hited");
+  let checker = setInterval(gameStop, 1000);
+};
 
-  btn_controller(true);
-
-  let ToF = action_point === 0 ? true : false;
-
-  setTimeout(function () {
-    target.classList.remove("hited");
-    btn_controller(ToF);
-  }, 300);
-}
+let HPcheck = function () {
+  console.log("HPcheck 실행됨");
+  return enemyStat.HP <= 0 ? "승리!" : myStat.HP <= 0 ? "패배" : null;
+};
 
 function btn_controller(ToF) {
   for (let action of actions) {
@@ -65,44 +48,94 @@ function btn_controller(ToF) {
 }
 
 //////////////////////////////////////////////
+let gameStart = function action_this() {
+  console.log(`enemyStat.HP : ${enemyStat.HP}`);
+  if (this.value > action_point) {
+    console.log("행동포인트 부족!!");
+  } else {
+    action_point = action_point - parseInt(this.value);
+    enemyStat.HP -= Math.floor(useSkill(enemy, myStat[`Active_Skill_${this.value}`]));
+    console.log(`enemyStat.HP : ${enemyStat.HP}`);
 
-function useSkill(target, Skill) {
-  const critical = Math.floor(Math.random() * 10) + 1;
+    if (enemyStat.HP === 0) {
+      HPcheck;
+    }
 
-  console.log(Skill);
-  let take_DMG = DMG_calc(Skill);
+    if ((action_point = 0)) {
+      btn_controller(true);
+      console.log("적의 턴");
+      setTimeout(function () {
+        enemyPhase();
+      }, 2000);
+    }
+  }
 
-  console.log(`take_DMG : ${take_DMG}`);
+  //////////////////////////////////////////////
 
-  vibration(target, action_point);
-}
+  function vibration(target, action_point) {
+    target.classList.add("hited");
 
-///////////////////////////////////////////////
+    btn_controller(true);
 
-function enemyPhase() {
-  const Skill = Math.floor(Math.random() * 3) + 1;
-  const DMG = Math.floor(Math.random() * 101) + 1;
+    let ToF = action_point === 0 ? true : false;
 
-  useSkill(myCharactor, enemyStat[`Active_Skill_${Skill}`]);
+    setTimeout(function () {
+      target.classList.remove("hited");
+      btn_controller(ToF);
+    }, 300);
+  }
 
-  setTimeout(function () {
-    action_point = 3;
-    btn_controller(false);
+  // function btn_controller(ToF) {
+  //   for (let action of actions) {
+  //     action.disabled = ToF;
+  //   }
+  // }
+
+  //////////////////////////////////////////////
+
+  function useSkill(target, Skill) {
+    const critical = Math.floor(Math.random() * 10) + 1;
+
+    let take_DMG = DMG_calc(Skill);
+
+    vibration(target, action_point);
+
+    return take_DMG;
+  }
+
+  ///////////////////////////////////////////////
+
+  function enemyPhase() {
+    console.log(`myStat.HP : ${myStat.HP}`);
+    const Skill = Math.floor(Math.random() * (3 - 1)) + 1;
+    const DMG = Math.floor(Math.random() * 101) + 1;
+    myStat.HP -= Math.floor(useSkill(myCharactor, enemyStat[`Active_Skill_${Skill}`]));
+
+    console.log(`myStat.HP : ${myStat.HP}`);
     console.log("나의 턴");
-  }, 2000);
-}
 
-///////////////////////////////////////////////
+    setTimeout(function () {
+      action_point = 3;
+      btn_controller(false);
+    }, 2000);
+  }
 
-function DMG_calc(Skill) {
-  let //
-    DMG_orig = Skill[1],
-    accuracy = Skill[2],
-    DMG_factor = 0,
-    DMG_random = Math.random() * (2 - accuracy),
-    DMG_res = DMG_orig + Math.round((DMG_random + Number.EPSILON) * 100) / 100;
-  console.log(`DMG_random : ${DMG_random}`);
-  console.log(`DMg_res : ${DMG_res}`);
-  return 10;
-}
-///////////////////////////////////////////////
+  ///////////////////////////////////////////////
+
+  function DMG_calc(Skill) {
+    let //
+      DMG_res = 0,
+      DMG_orig = Skill[1],
+      accuracy = Skill[2],
+      DMG_CritChance = accuracy - Math.random();
+    DMG_res = DMG_CritChance > 0 ? crit(1) : crit(0);
+
+    function crit(num) {
+      return DMG_orig + (DMG_orig * num) / 2 + DMG_orig * Math.abs(DMG_CritChance);
+    }
+    console.log(`Crit : ${DMG_CritChance > 0}`);
+    return DMG_res;
+  }
+
+  ///////////////////////////////////////////////
+};
