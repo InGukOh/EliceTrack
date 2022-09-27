@@ -19,36 +19,14 @@ const enemyStat = {
   HP: 120,
 };
 
-window.onload = function gamePlaying() {
-  for (let action of actions) {
-    action.addEventListener("click", gameStart);
-  }
-
-  let gameStop = function () {
-    console.log("gameStop 실행됨");
-    if (HPcheck() != null) {
-      alert(`게임 종료 !! : ${HPcheck()}`);
-      btn_controller(true);
-      clearInterval(checker);
-    }
-  };
-
-  let checker = setInterval(gameStop, 1000);
-};
-
 let HPcheck = function () {
   console.log("HPcheck 실행됨");
   return enemyStat.HP <= 0 ? "승리!" : myStat.HP <= 0 ? "패배" : null;
 };
 
-function btn_controller(ToF) {
-  for (let action of actions) {
-    action.disabled = ToF;
-  }
-}
-
 //////////////////////////////////////////////
-let gameStart = function action_this() {
+const gameStart = function () {
+  //action_this
   console.log(`enemyStat.HP : ${enemyStat.HP}`);
   if (this.value > action_point) {
     console.log("행동포인트 부족!!");
@@ -57,11 +35,11 @@ let gameStart = function action_this() {
     enemyStat.HP -= Math.floor(useSkill(enemy, myStat[`Active_Skill_${this.value}`]));
     console.log(`enemyStat.HP : ${enemyStat.HP}`);
 
-    if (enemyStat.HP === 0) {
+    if (enemyStat.HP <= 0) {
       HPcheck;
     }
 
-    if ((action_point = 0)) {
+    if (action_point == 0) {
       btn_controller(true);
       console.log("적의 턴");
       setTimeout(function () {
@@ -69,27 +47,6 @@ let gameStart = function action_this() {
       }, 2000);
     }
   }
-
-  //////////////////////////////////////////////
-
-  function vibration(target, action_point) {
-    target.classList.add("hited");
-
-    btn_controller(true);
-
-    let ToF = action_point === 0 ? true : false;
-
-    setTimeout(function () {
-      target.classList.remove("hited");
-      btn_controller(ToF);
-    }, 300);
-  }
-
-  // function btn_controller(ToF) {
-  //   for (let action of actions) {
-  //     action.disabled = ToF;
-  //   }
-  // }
 
   //////////////////////////////////////////////
 
@@ -112,6 +69,11 @@ let gameStart = function action_this() {
     myStat.HP -= Math.floor(useSkill(myCharactor, enemyStat[`Active_Skill_${Skill}`]));
 
     console.log(`myStat.HP : ${myStat.HP}`);
+
+    if (myStat.HP <= 0) {
+      HPcheck;
+    }
+
     console.log("나의 턴");
 
     setTimeout(function () {
@@ -138,4 +100,46 @@ let gameStart = function action_this() {
   }
 
   ///////////////////////////////////////////////
+};
+
+//////////////////////////////////////////////
+
+function vibration(target, action_point) {
+  target.classList.add("hited");
+
+  btn_controller(true);
+
+  let ToF = action_point === 0 ? true : false;
+
+  setTimeout(function () {
+    target.classList.remove("hited");
+    btn_controller(ToF);
+  }, 300);
+}
+
+function btn_controller(ToF) {
+  for (let action of actions) {
+    action.disabled = ToF;
+  }
+}
+
+//////////////////////////////////////////////
+for (let action of actions) {
+  action.addEventListener("click", gameStart);
+}
+
+window.onload = function gamePlaying() {
+  for (let action of actions) {
+    action.addEventListener("click", gameStart);
+  }
+  let checker = setInterval(gameStop, 1000);
+
+  function gameStop() {
+    console.log("gameStop 실행됨");
+    if (HPcheck() != null) {
+      alert(`게임 종료 !! : ${HPcheck()}`);
+      btn_controller(true);
+      clearInterval(checker);
+    }
+  }
 };
