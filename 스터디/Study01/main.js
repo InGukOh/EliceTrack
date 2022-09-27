@@ -16,7 +16,7 @@ const enemyStat = {
   Active_Skill_1: ["Skill_1", 10, 0.7],
   Active_Skill_2: ["Skill_2", 15, 0.4],
   Active_Skill_3: ["Skill_3", 20, 0.1],
-  HP: 120,
+  HP: 100,
 };
 
 let HPcheck = function () {
@@ -25,7 +25,7 @@ let HPcheck = function () {
 };
 
 //////////////////////////////////////////////
-const gameStart = function () {
+const gamePlay = function () {
   //action_this
   console.log(`enemyStat.HP : ${enemyStat.HP}`);
   if (this.value > action_point) {
@@ -37,9 +37,7 @@ const gameStart = function () {
 
     if (enemyStat.HP <= 0) {
       HPcheck;
-    }
-
-    if (action_point == 0) {
+    } else if (action_point == 0) {
       btn_controller(true);
       console.log("적의 턴");
       setTimeout(function () {
@@ -125,16 +123,16 @@ function btn_controller(ToF) {
 
 //////////////////////////////////////////////
 for (let action of actions) {
-  action.addEventListener("click", gameStart);
+  action.addEventListener("click", gamePlay);
 }
 
 window.onload = function gamePlaying() {
   for (let action of actions) {
     action.addEventListener("click", gameStart);
   }
-  let checker = setInterval(gameStop, 1000);
+  let checker = setInterval(gameStart, 1000);
 
-  function gameStop() {
+  function gameStart() {
     console.log("gameStop 실행됨");
     if (HPcheck() != null) {
       alert(`게임 종료 !! : ${HPcheck()}`);
