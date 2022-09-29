@@ -1,0 +1,58 @@
+/* 아래 코드는 문제 해결을 위해 기본적으로 제공되는 코드입니다. 수정하지 마세요! */
+h1 {
+    color: orange;
+}
+
+/* 지시사항 1번을 참고하여 코드를 작성하세요. */
+.list {
+    font-style: italic;
+}
+
+/* 지시사항 2번을 참고하여 코드를 작성하세요. */
+
+/* .list p {
+    font-weight: bold;
+} */
+
+/* .list > p {
+    font-weight: 100;
+} */
+
+/* # 띄어쓰기와 >의 차이 */
+/* .list > p {
+    color: red;
+} */
+
+/* # CSS select를 이용한 여러가지 다른 방법 */
+
+/* .list p:first-child {
+    color: red;
+} */
+
+.list P:nth-child(2) {
+    color: red;
+}
+
+/* 지시사항 3번을 참고하여 코드를 작성하세요. */
+.notice {
+    color: #532fa1;
+}
+
+/* 지시사항 4번을 참고하여 코드를 작성하세요. */
+.notice > ol {
+    color: #a44789;
+}
+
+/* # 형제, 인접 선택자 예제 */
+
+/* .notice p + ol {
+    color: red;
+} */
+
+/* .notice p ~ ol {
+    color: red;
+} */
+
+/* .notice li:last-child {
+    color: #434343;
+} */

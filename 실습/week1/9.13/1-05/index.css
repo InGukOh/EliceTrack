@@ -1,0 +1,40 @@
+/* h1 */
+.paragraph {
+    width: 500px;
+    height: 500px;
+    background-color: #6936b5;
+    font-size: 50px;
+    font-weight: bold;
+    font-style: italic;
+    font-family: sans-serif;
+    /* text-decoration: line-through; */
+}
+
+.test {
+    width: 500px;
+    height: 500px;
+    background-color: blue;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+/* .text {
+    color: red;
+} */
+
+#div1 {
+    /* margin: 50px; */
+    width: 100px;
+    height: 100px;
+    background-color: yellow;
+    animation: 3s ease-in 1s infinite reverse both running slidein;
+}
+
+#div2 {
+    width: 100px;
+    height: 100px;
+    background-color: purple;
+}
