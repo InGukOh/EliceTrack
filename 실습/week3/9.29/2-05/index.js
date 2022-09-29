@@ -5,7 +5,7 @@ input: "Happy Thanksgiving!"
 output: "!gnivigsknahT yppaH"
 */
 function getRevese(s) {
-    return s.split("").reverse().join("");
+  return s.split("").reverse().join("");
 }
 
 console.log(getRevese("Happy Thanksgiving!"));
@@ -18,7 +18,7 @@ console.log(getRevese("Happy Thanksgiving!"));
   output: 2,443,243
   */
 function groupByCommas(n) {
-    return n.toLocaleString();
+  return n.toLocaleString();
 }
 
 console.log(groupByCommas(2443243));
@@ -34,14 +34,14 @@ console.log(groupByCommas(2443243));
   output: s
   */
 function getMiddle(s) {
-    const strLength = s.length;
-    let result;
-    if (strLength % 2 === 0) {
-        result = s.substr(strLength / 2 - 1, 2);
-    } else {
-        result = s.substr(strLength / 2, 1);
-    }
-    return result;
+  const strLength = s.length;
+  let result;
+  if (strLength % 2 === 0) {
+    result = s.substr(strLength / 2 - 1, 2);
+  } else {
+    result = s.substr(strLength / 2, 1);
+  }
+  return result;
 }
 
 console.log(getMiddle("christmas"));
